@@ -11,8 +11,20 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
+
+const allowedOrigins = [
+    'http://localhost:5173',
+    'https://lexme-e-com-front.vercel.app'
+];
+
 app.use(cors({
-     origin: 'http://localhost:5173',
+    origin: function(origin, callback){
+        if(!origin || allowedOrigins.includes(origin)){
+            callback(null, true);
+        }else{
+            callback(new Error(`CORS not allowed from origin: ${origin}`));
+        }
+    },
     credentials: true
 }
 ));
