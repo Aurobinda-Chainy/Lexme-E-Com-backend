@@ -4,7 +4,7 @@ const userController = require('../controllers/userController');
 const auth = require('../middleWares/authMiddleware');
 
 
-router.post("/cart",auth, userController.cart);
+router.post("/",auth, userController.cart);
 
 module.exports = router;
 

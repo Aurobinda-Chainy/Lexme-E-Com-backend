@@ -3,20 +3,21 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
-let isConnected = false;
-
 const connectDB = async () => {
-  if (isConnected) return;
+    try{
+        await mongoose.connect(process.env.MONGO_URI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        });
 
-  try {
-    const db = await mongoose.connect(process.env.MONGO_URI);
-    isConnected = true;
-
-    console.log("MongoDB connected:", db.connection.name);
-  } catch (error) {
-    console.error("MongoDB connection error:", error.message);
-    throw new Error("Could not connect to MongoDB");
-  }
+        const db = mongoose.connection;
+        console.log("MongoDB connected");
+        console.log(`Connected to MongoDB database: ${db.name}`);
+        console.log(`ReadyState: ${db.readyState}`);
+    }catch(error){
+        console.error("MongoDb connection error:", error.messaage);
+        process.exit(1);
+    }
 };
 
 module.exports = connectDB;
